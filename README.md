@@ -27,4 +27,7 @@ As an example, suppose we have 2 Qubits - they can have a joint state of $\frac{
 ## Quantum gates
 A Quantum gate is the equivalent of a classical logic gate, and is a building-block of quantum operations.  
 As I mentioned - all Quantum operations that are not measurements are essentially Unitary matrix multiplications with the vector that represents the current quantum state.  
-As a reminder, a [Unitary matrix](https://en.wikipedia.org/wiki/Unitary_matrix) means that the [conjugate trasposed](https://en.wikipedia.org/wiki/Conjugate_transpose) matrix is the [inverse](https://en.wikipedia.org/wiki/Invertible_matrix), or, in other words: $UU^*=U^*U=I$. In physical notation you might see the dagger ($\dagger$) notation used: $UU^\dagger=U^\dagger U=I$.
+As a reminder, a [Unitary matrix](https://en.wikipedia.org/wiki/Unitary_matrix) means that the [conjugate trasposed](https://en.wikipedia.org/wiki/Conjugate_transpose) matrix is the [inverse](https://en.wikipedia.org/wiki/Invertible_matrix), or, in other words: $UU^*=U^*U=I$. In physical notation you might see the dagger ($\dagger$) notation used: $UU^\dagger=U^\dagger U=I$.  
+That means that:
+1. The number of inputs and outputs in a Quantum gate must be equal (so gates like [OR gate](https://en.wikipedia.org/wiki/OR_gate) cannot be quantum gates). A gate working on $n$ Qubits will be represented by a square $2^n \cross 2^n$ matrix.
+2. Quantum gates must be reversible.
