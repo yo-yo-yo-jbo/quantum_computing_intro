@@ -88,7 +88,7 @@ That means that:
 
 Let's examine some common Quantum gates!
 
-### Pauli-X gate
+### The Pauli-X, Pauli-Y and Pauli-Z gate
 The Pauli-X gate works on a single Qubit and looks like this:
 
 $$
@@ -129,3 +129,57 @@ $$
 
 I am assuming you are familiar with [matrix multiplication](https://en.wikipedia.org/wiki/Matrix_multiplication).  
 Note how the X-Pauli gate, when operating on pure states - is essentially a [NOT gate](https://en.wikipedia.org/wiki/Inverter_(logic_gate)), but of course - there is no classical equivalent of working on a superposition: $X(a|0 \rangle + b|1 \rangle) = b |0 \rangle + a |1 \rangle$.
+
+The matrix representation of the Pauli-Y gate looks like this:
+
+$$
+Y = \begin{bmatrix}
+0 & -i \\
+i & 0
+\end{bmatrix}
+$$
+
+And this is how it operates on the base states:  
+$Y|0 \rangle = i|1 \rangle$  
+$Y|1 \rangle = -i|0 \rangle$
+
+Note how it uses [the imaginary number i](https://en.wikipedia.org/wiki/Imaginary_unit).
+
+Lastly, here is the Pauli-Z gate:
+
+$$
+Z = \begin{bmatrix}
+1 & 0 \\
+0 & -1
+\end{bmatrix}
+$$
+
+$Z|0 \rangle = |1 \rangle$  
+$Z|1 \rangle = -|1 \rangle$
+
+Note how the Pauli-Z gate flips the sign of $|1 \rangle$ (but leaves $|0 \rangle$ unchanged).
+
+### Hadamard gate
+The Hadamard gate (denoted as H) is a very useful gate - it takes "pure" states and turns them into "mixed" states, and vice versa:
+
+$$
+H = \frac{1}{\sqrt{2}}\begin{bmatrix}
+1 & 1 \\
+1 & -1
+\end{bmatrix}
+$$
+
+Note how it operates on pure states:
+
+$H|0 \rangle = \frac{1}{\sqrt{2}} \left( |0 \rangle + |1 \rangle \right)$  
+$H|1 \rangle = \frac{1}{\sqrt{2}} \left( |0 \rangle - |1 \rangle \right)$
+
+And how it operates on mixed states:
+
+$H \left( \frac{1}{\sqrt{2}} |0 \rangle + \frac{1}{\sqrt{2}} |1 \rangle \right) = |0 \rangle$  
+$H \left( \frac{1}{\sqrt{2}} |0 \rangle - \frac{1}{\sqrt{2}} |1 \rangle \right) = |1 \rangle$
+
+Note how Hadamard gates are their own inverses.  
+The operation itself is extremely useful since it means we can always start with Qubits that are in a pure state (by performing a measurement, for example) and turn them into mixed states - basically, **creating superposition**. If a pure-state Qubit is operated by an Hadamard gate, measuring it will result in a truly 50%-50% random chance of being either $|0 \rangle$ or $|1 \rangle$, as dictated by the Born rule:  
+
+$\left( \frac{1}{\sqrt{2}} \right)^2 = \left( - \frac{1}{\sqrt{2}} \right)^2 = \frac{1}{2}$
