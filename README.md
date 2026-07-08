@@ -8,8 +8,8 @@ I will warn that there is some mathematical background necessary - particularly 
 Apparently, on the smallest scales, the world behaves very different than what we're used to. This part is extremely hard to accept as it's substantially different from our day-to-day experiences, and while (in my opinion) we still do not know what *truly* happens at those scales - we have good mathematical models for those behaviors.  
 Interestingly, those behaviors and\or the mathematical model could be used for actual computation that would have certain advantages to classical computing.  
 Instead of rambling on - let me write out those behaviors:
-1. Quantum particles (e.g. [Photons](https://en.wikipedia.org/wiki/Photon), [Electrons](https://en.wikipedia.org/wiki/Electron) and so on) have certain properties that do not have definite values before measurements. Some of those properties could be the particle's position, [momentum](https://en.wikipedia.org/wiki/Momentum), [spin](https://en.wikipedia.org/wiki/Spin_(physics)) (intrinsic [angular momentum](https://en.wikipedia.org/wiki/Angular_momentum)) and so on. We say that those properties are in a **[superposition](https://en.wikipedia.org/wiki/Superposition_principle)** - not because of lack of information about the property, but because that's how nature works. For example, a particle's [spin](https://en.wikipedia.org/wiki/Spin_(physics)) can be measured as "up" or "down", but is normally in a superposition of "up" and "down" - kind of a "mix" of them. We mark that as $|\varphi \rangle = a|\uparrow \rangle + b|\downarrow \rangle$ - and we say that the spin of the particle has a coefficient of "a" in the "up" state, and a coefficient of "b" to be in the "down" state.
-2. Measuring a particle "collapses" the property into a base state - randomly (but not uniformly). For example, in the spin example, we asserted $|\varphi\rangle = a|\uparrow \rangle + b|\downarrow \rangle$. If we measure the spin - it would collapse into the state $\uparrow \rangle$ with a probability of $a^2$, and collapse into the state $\downarrow \rangle$ with a probability of $b^2$. This rule is known as [the Born rule](https://en.wikipedia.org/wiki/Born_rule), and dictates a strong assumption on the coefficients - **their values squared must sum up to 1**, since they are probabiliies. In mathematical notation: $a^2 + b^2 = 1$, and generally for $n$ coefficients that I will be marking as $c_i$: $\sum_{i=1}^{n}c_i^2 = 1$. Note that **we do not control the result** - nature decides on its own based on the coefficients and the Born rule. Note that after a measurement, follow-up measurements result in the same value always - that's why we call this phenomenon a "collapse". I do not want to get into the engineering or physics aspects, but maintaining quantum particles in superpositions without making the collapse due to unintentional measurements (I will keep the definition of a measurement vague here on purpose) - is the main engineering challenge in Quantum computing these days.
+1. Quantum particles (e.g. [Photons](https://en.wikipedia.org/wiki/Photon), [Electrons](https://en.wikipedia.org/wiki/Electron) and so on) have certain properties that do not have definite values before measurements. Some of those properties could be the particle's position, [momentum](https://en.wikipedia.org/wiki/Momentum), [spin](https://en.wikipedia.org/wiki/Spin_(physics)) (intrinsic [angular momentum](https://en.wikipedia.org/wiki/Angular_momentum)) and so on. We say that those properties are in a **[superposition](https://en.wikipedia.org/wiki/Superposition_principle)** - not because of lack of information about the property, but because that's how nature works. For example, a particle's [spin](https://en.wikipedia.org/wiki/Spin_(physics)) can be measured as "up" or "down", but is normally in a superposition of "up" and "down" - kind of a "mix" of them. We mark that as $\ket{\varphi} = a \ket{\uparrow} + b \ket{\downarrow}$ - and we say that the spin of the particle has a coefficient of "a" in the "up" state, and a coefficient of "b" to be in the "down" state.
+2. Measuring a particle "collapses" the property into a base state - randomly (but not uniformly). For example, in the spin example, we asserted $\ket{\varphi} = a\ket{\uparrow} + b\ket{\downarrow}$. If we measure the spin - it would collapse into the state $\ket{\uparrow}$ with a probability of $a^2$, and collapse into the state $\ket{\downarrow}$ with a probability of $b^2$. This rule is known as [the Born rule](https://en.wikipedia.org/wiki/Born_rule), and dictates a strong assumption on the coefficients - **their values squared must sum up to 1**, since they are probabiliies. In mathematical notation: $a^2 + b^2 = 1$, and generally for $n$ coefficients that I will be marking as $c_i$: $\sum_{i=1}^{n}c_i^2 = 1$. Note that **we do not control the result** - nature decides on its own based on the coefficients and the Born rule. Note that after a measurement, follow-up measurements result in the same value always - that's why we call this phenomenon a "collapse". I do not want to get into the engineering or physics aspects, but maintaining quantum particles in superpositions without making the collapse due to unintentional measurements (I will keep the definition of a measurement vague here on purpose) - is the main engineering challenge in Quantum computing these days.
 3. The coefficients in superposition could be negative or even complex numbers - as long as their sum of squares is exactly 1. This might look weird or useless, but that's the source of Quantum computing's power.
 4. We can manipulate the superposition coefficients without measuring them. This is done via something called "Quantum gates" (the analogue of traditional [logic gates](https://en.wikipedia.org/wiki/Logic_gate)), and is mathematically done by multiplying the algebric representation of the quantum state with a [Unitary matrix](https://en.wikipedia.org/wiki/Unitary_matrix). More on that later. A measurement, by the way - is mathematically a multiplication of the state by a **non-*Unitary-matrix**. We'll see that later too.
 5. Quantum entanglement - we can have two (or more) particles with a **joint state**. When I say a "joint state" I mean that you cannot think as the state of a single particle anymore - the states are "correlated" in some sense. That also means that measuring one particle *immediately* affects the other, i.e. the joint state of these particles collapses together. This also means manipiulating the state (as we discussed) - manipulates the states of both particles at the same time.
@@ -18,22 +18,22 @@ As you can see, these are a lot of assumptions - and they also imply many limita
 
 ## Qubits
 Just like regular [bits](https://en.wikipedia.org/wiki/Bit) we have on a classic computer - we have the Quantum computing equivalent called "Qubits". Clasical bits are either 0 or 1, and are implemented using voltage (high voltage above a certain threshold represents a digital 1, low voltage represents a 0).  
-Qubits also have 0 and 1 equivalents - for example, a spin of a particle can be used for that: spin down could represent a 0 and spin up could represent a 1 - which we will represent as $|0 \rangle$ and $|1 \rangle$. Since we have a superposition - a Qubit would have coefficients to those base states: $a|0> + b|1>$. Let us also remember that $a$ and $b$ can be complex numbers, and their sum of squares must add up to 1: $a^2 + b^2 = 1$. Sometimes you might see those coefficients described as **probability amplitudes** - for all means and purposes - it's just a name we give them.  
+Qubits also have 0 and 1 equivalents - for example, a spin of a particle can be used for that: spin down could represent a 0 and spin up could represent a 1 - which we will represent as $\ket{0}$ and $\ket{1}$. Since we have a superposition - a Qubit would have coefficients to those base states: $a\ket{0} + b\ket{1}$. Let us also remember that $a$ and $b$ can be complex numbers, and their sum of squares must add up to 1: $a^2 + b^2 = 1$. Sometimes you might see those coefficients described as **probability amplitudes** - for all means and purposes - it's just a name we give them.  
 I will avoid the question of how those states are actually implemented - spin is not the only way to do so - and treat it as a "black-box", just like one doesn't necessarily need to know how classical bits are implemented.  
 One important aspect of Qubits is that they cannot be erased or copied - this has many implications on Quantum gates which I will describe shortly.  
 Of course, just like one bit is not very interesting - one Qubit might not be as powerful as many. In Quantum computing, we are interested in **multi-Qubit systems**, exploiting the superposition and entanglement properties I mentioned earlier.  
-As an example, suppose we have 2 Qubits - they can have a joint state of $\frac{1}{\sqrt{2}}|00\rangle + \frac{1}{\sqrt{2}}|11\rangle$ (note how the coefficients's squares sum up to 1!) - if we perform a measurements - both Qubits collapse to the same base state - $0\rangle$ or $1\rangle$! This is how entanglement looks like mathematically, and we will see its use in this blogpost series.  
-One more important thing - we will represent the states $|0 \rangle$ and $|1 \rangle$ as column vectors - this will be useful when we discuss Quantum gates. So:
+As an example, suppose we have 2 Qubits - they can have a joint state of $\frac{1}{\sqrt{2}} \ket{00} + \frac{1}{\sqrt{2}} \ket{11}$ (note how the coefficients's squares sum up to 1!) - if we perform a measurements - both Qubits collapse to the same base state - $\ket{0}$ or $\ket{1}$! This is how entanglement looks like mathematically, and we will see its use in this blogpost series.  
+One more important thing - we will represent the states $\ket{0}$ and $\ket{1}$ as column vectors - this will be useful when we discuss Quantum gates. So:
 
 $$
-|0 \rangle = \begin{bmatrix}
+\ket{0} = \begin{bmatrix}
 1 \\
 0
 \end{bmatrix}
 $$
 
 $$
-|1 \rangle = \begin{bmatrix}
+\ket{1} = \begin{bmatrix}
 0 \\
 1
 \end{bmatrix}
@@ -42,7 +42,7 @@ $$
 In a multi-Qubit system we will extend the rows:
 
 $$
-|00 \rangle = \begin{bmatrix}
+\ket{00} = \begin{bmatrix}
 1 \\
 0 \\
 0 \\
@@ -51,7 +51,7 @@ $$
 $$
 
 $$
-|01 \rangle = \begin{bmatrix}
+\ket{01} = \begin{bmatrix}
 0 \\
 1 \\
 0 \\
@@ -60,7 +60,7 @@ $$
 $$
 
 $$
-|10 \rangle = \begin{bmatrix}
+\ket{10} = \begin{bmatrix}
 0 \\
 0 \\
 1 \\
@@ -69,7 +69,7 @@ $$
 $$
 
 $$
-|11 \rangle = \begin{bmatrix}
+\ket{01} = \begin{bmatrix}
 0 \\
 0 \\
 0 \\
@@ -101,7 +101,7 @@ $$
 Let us see how it affects the base states:
 
 $$
-X|0 \rangle = \begin{bmatrix}
+X \ket{0} = \begin{bmatrix}
 0 & 1 \\
 1 & 0
 \end{bmatrix} \begin{bmatrix}
@@ -114,7 +114,7 @@ X|0 \rangle = \begin{bmatrix}
 $$
 
 $$
-X|1 \rangle = \begin{bmatrix}
+X \ket{1} = \begin{bmatrix}
 0 & 1 \\
 1 & 0
 \end{bmatrix} \begin{bmatrix}
@@ -127,7 +127,7 @@ X|1 \rangle = \begin{bmatrix}
 $$
 
 I am assuming you are familiar with [matrix multiplication](https://en.wikipedia.org/wiki/Matrix_multiplication).  
-Note how the Pauli-X gate, when operating on pure states - is essentially a [NOT gate](https://en.wikipedia.org/wiki/Inverter_(logic_gate)), but of course - there is no classical equivalent of working on a superposition: $X(a|0 \rangle + b|1 \rangle) = b |0 \rangle + a |1 \rangle$.
+Note how the Pauli-X gate, when operating on pure states - is essentially a [NOT gate](https://en.wikipedia.org/wiki/Inverter_(logic_gate)), but of course - there is no classical equivalent of working on a superposition: $X\left(a \ket{0} + b \ket{1} \right) = b \ket{0} + a \ket{1}$.
 
 The matrix representation of the **Pauli-Y gate** looks like this:
 
@@ -139,8 +139,8 @@ i & 0
 $$
 
 And this is how it operates on the base states:  
-$Y|0 \rangle = i|1 \rangle$  
-$Y|1 \rangle = -i|0 \rangle$
+$Y \ket{0} = i \ket{1}$  
+$Y \ket{1} = -i \ket{0}$
 
 Note how it uses [the imaginary number i](https://en.wikipedia.org/wiki/Imaginary_unit).
 
@@ -153,10 +153,10 @@ Z = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-$Z|0 \rangle = |1 \rangle$  
-$Z|1 \rangle = -|1 \rangle$
+$Z \ket{0} = \ket{1}$  
+$Z \ket{1} = - \ket{1}$
 
-Note how the Pauli-Z gate flips the sign of $|1 \rangle$ (but leaves $|0 \rangle$ unchanged).
+Note how the Pauli-Z gate flips the sign of $\ket{1}$ (but leaves $\ket{0}$ unchanged).
 
 ### Hadamard gate
 The **Hadamard gate** (denoted as H) is a very useful gate - it takes "pure" states and turns them into "mixed" states, and vice versa:
@@ -170,16 +170,16 @@ $$
 
 Note how it operates on pure states:
 
-$H|0 \rangle = \frac{1}{\sqrt{2}} \left( |0 \rangle + |1 \rangle \right)$  
-$H|1 \rangle = \frac{1}{\sqrt{2}} \left( |0 \rangle - |1 \rangle \right)$
+$H \ket{0} = \frac{1}{\sqrt{2}} \left( \ket{0} + \ket{1} \right)$  
+$H \ket{1} = \frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$
 
 And how it operates on mixed states:
 
-$H \left( \frac{1}{\sqrt{2}} |0 \rangle + \frac{1}{\sqrt{2}} |1 \rangle \right) = |0 \rangle$  
-$H \left( \frac{1}{\sqrt{2}} |0 \rangle - \frac{1}{\sqrt{2}} |1 \rangle \right) = |1 \rangle$
+$H \left( \frac{1}{\sqrt{2}} \ket{0} + \frac{1}{\sqrt{2}} \ket{1} \right) = \ket{0}$  
+$H \left( \frac{1}{\sqrt{2}} \ket{0} - \frac{1}{\sqrt{2}} \ket{1} \right) = \ket{1}$
 
 Note how Hadamard gates are their own inverses.  
-The operation itself is extremely useful since it means we can always start with Qubits that are in a pure state (by performing a measurement, for example) and turn them into mixed states - basically, **creating superposition**. If a pure-state Qubit is operated by an Hadamard gate, measuring it will result in a truly 50%-50% random chance of being either $|0 \rangle$ or $|1 \rangle$, as dictated by the Born rule:  
+The operation itself is extremely useful since it means we can always start with Qubits that are in a pure state (by performing a measurement, for example) and turn them into mixed states - basically, **creating superposition**. If a pure-state Qubit is operated by an Hadamard gate, measuring it will result in a truly 50%-50% random chance of being either $\ket{0}$ or $\ket{1}$, as dictated by the Born rule:  
 
 $\left( \frac{1}{\sqrt{2}} \right)^2 = \left( - \frac{1}{\sqrt{2}} \right)^2 = \frac{1}{2}$
 
@@ -195,8 +195,8 @@ $$
 
 So:
 
-$P(\varphi)|0 \rangle = |0 \rangle$  
-$P(\varphi)|1 \rangle = e^{i \varphi} |1 \rangle$
+$P(\varphi)\ket{0} = \ket{0}$  
+$P(\varphi)\ket{1} = e^{i \varphi} \ket{1}$
 
 Sometimes in literature you might see **T gates** - those refer to Phase gates with $\varphi = \frac{\pi}{4}$.
 
@@ -214,10 +214,10 @@ $$
 
 Let's see how it works on pure states:
 
-$CNOT |00 \rangle = |00 \rangle$  
-$CNOT |01 \rangle = |01 \rangle$  
-$CNOT |10 \rangle = |11 \rangle$  
-$CNOT |11 \rangle = |10 \rangle$
+$CNOT \ket{00} = \ket{00}$  
+$CNOT \ket{01} = \ket{01}$  
+$CNOT \ket{10} = \ket{11}$  
+$CNOT \ket{11} = \ket{10}$
 
 We can see the CNOT gate works on two Qubits - the "control" Qubit and the "input" Qubit - if the control Qubit is 0 the input Qubit is left unchanged, but if the control Qubit is 1 - the input Qubit is flipped.  
 This gate is equivalent to a classical [XOR gate](https://en.wikipedia.org/wiki/XOR_gate) but again - it works on Qubits that might be in a superposition.
