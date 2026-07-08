@@ -221,3 +221,34 @@ $CNOT \ket{11} = \ket{10}$
 
 We can see the CNOT gate works on two Qubits - the "control" Qubit and the "input" Qubit - if the control Qubit is 0 the input Qubit is left unchanged, but if the control Qubit is 1 - the input Qubit is flipped.  
 This gate is equivalent to a classical [XOR gate](https://en.wikipedia.org/wiki/XOR_gate) but again - it works on Qubits that might be in a superposition.
+
+### Toffoli gate
+The **Toffoli gate** (also known as a **CCNOT gate**) works on 3 Qubits:
+
+$$
+CCNOT = \begin{bmatrix}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+\end{bmatrix}
+$$
+
+Let us also see how it operates on pure states:
+
+$CCNOT \ket{000} = \ket{000}$  
+$CCNOT \ket{001} = \ket{001}$  
+$CCNOT \ket{010} = \ket{010}$  
+$CCNOT \ket{011} = \ket{011}$  
+$CCNOT \ket{100} = \ket{100}$  
+$CCNOT \ket{101} = \ket{101}$  
+$CCNOT \ket{110} = \ket{111}$  
+$CCNOT \ket{111} = \ket{110}$
+
+The way to think about Toffoli gates is like a gate with two control Qubits and one input Qubit, with the following rule - the target Qubit is inverted if and only if the two control Qubits are on.  
+The amazing thing about Toffoli gates is that they are **clasically universal** - in a sense that any reversible classical circuit can be implemented using Toffoli gates.  
+This fact alone means that Quantum computers are at least as strong as classical computers, computationally.
