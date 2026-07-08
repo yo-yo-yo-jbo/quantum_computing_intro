@@ -22,7 +22,60 @@ Qubits also have 0 and 1 equivalents - for example, a spin of a particle can be 
 I will avoid the question of how those states are actually implemented - spin is not the only way to do so - and treat it as a "black-box", just like one doesn't necessarily need to know how classical bits are implemented.  
 One important aspect of Qubits is that they cannot be erased or copied - this has many implications on Quantum gates which I will describe shortly.  
 Of course, just like one bit is not very interesting - one Qubit might not be as powerful as many. In Quantum computing, we are interested in **multi-Qubit systems**, exploiting the superposition and entanglement properties I mentioned earlier.  
-As an example, suppose we have 2 Qubits - they can have a joint state of $\frac{1}{\sqrt{2}}|00\rangle + \frac{1}{\sqrt{2}}|11\rangle$ (note how the coefficients's squares sum up to 1!) - if we perform a measurements - both Qubits collapse to the same base state - $0\rangle$ or $1\rangle$! This is how entanglement looks like mathematically, and we will see its use in this blogpost series.
+As an example, suppose we have 2 Qubits - they can have a joint state of $\frac{1}{\sqrt{2}}|00\rangle + \frac{1}{\sqrt{2}}|11\rangle$ (note how the coefficients's squares sum up to 1!) - if we perform a measurements - both Qubits collapse to the same base state - $0\rangle$ or $1\rangle$! This is how entanglement looks like mathematically, and we will see its use in this blogpost series.  
+One more important thing - we will represent the states $|0 \rangle$ and $|1 \rangle$ as column vectors - this will be useful when we discuss Quantum gates. So:
+
+$$
+|0 \rangle = \begin{bmatrix}
+1 \\
+0
+\end{bmatrix}
+$$
+
+$$
+|1 \rangle = \begin{bmatrix}
+0 \\
+1
+\end{bmatrix}
+$$
+
+In a multi-Qubit system we will extend the rows:
+
+$$
+|00 \rangle = \begin{bmatrix}
+1 \\
+0 \\
+0 \\
+0
+\end{bmatrix}
+$$
+
+$$
+|01 \rangle = \begin{bmatrix}
+0 \\
+1 \\
+0 \\
+0
+\end{bmatrix}
+$$
+
+$$
+|10 \rangle = \begin{bmatrix}
+0 \\
+0 \\
+1 \\
+0
+\end{bmatrix}
+$$
+
+$$
+|11 \rangle = \begin{bmatrix}
+0 \\
+0 \\
+0 \\
+1
+\end{bmatrix}
+$$
 
 ## Quantum gates
 A Quantum gate is the equivalent of a classical logic gate, and is a building-block of quantum operations.  
@@ -31,3 +84,48 @@ As a reminder, a [Unitary matrix](https://en.wikipedia.org/wiki/Unitary_matrix) 
 That means that:
 1. The number of inputs and outputs in a Quantum gate must be equal (so gates like [OR gate](https://en.wikipedia.org/wiki/OR_gate) cannot be quantum gates). A gate working on $n$ Qubits will be represented by a square $2^n \times 2^n$ matrix.
 2. Quantum gates must be reversible.
+3. Quantum gates are linear transformations that preserve the vector norm (that makes their matrices Unitary) - which means we can examine how they operate on the base states and use Linear algebra to see how they operate on a superposition state.
+
+Let's examine some common Quantum gates!
+
+### Pauli-X gate
+The Pauli-X gate works on a single Qubit and looks like this:
+
+$$
+X = \begin{bmatrix}
+0 & 1 \\
+1 & 0
+\end{bmatrix}
+$$
+
+Let us see how it affects the base states:
+
+$$
+X|0 \rangle = \begin{bmatrix}
+0 & 1 \\
+1 & 0
+\end{bmatrix} \begin{bmatrix}
+1 \\
+0
+\end{bmatrix} = \begin{bmatrix}
+0 \\
+1
+\end{bmatrix}
+$$
+
+
+$$
+X|1 \rangle = \begin{bmatrix}
+0 & 1 \\
+1 & 0
+\end{bmatrix} \begin{bmatrix}
+0 \\
+1
+\end{bmatrix} = \begin{bmatrix}
+1 \\
+0
+\end{bmatrix}
+$$
+
+I am assuming you are familiar with [matrix multiplication](https://en.wikipedia.org/wiki/Matrix_multiplication).  
+Note how the X-Pauli gate, when operating on pure states - is essentially a [NOT gate](https://en.wikipedia.org/wiki/Inverter_(logic_gate)), but of course - there is no classical equivalent of working on a superposition: $X(a|0 \rangle + b|1 \rangle) = b |0 \rangle + a |1 \rangle$.
