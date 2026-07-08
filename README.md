@@ -89,7 +89,7 @@ That means that:
 Let's examine some common Quantum gates!
 
 ### The Pauli-X, Pauli-Y and Pauli-Z gate
-The Pauli-X gate works on a single Qubit and looks like this:
+The **Pauli-X gate** works on a single Qubit and looks like this:
 
 $$
 X = \begin{bmatrix}
@@ -113,7 +113,6 @@ X|0 \rangle = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-
 $$
 X|1 \rangle = \begin{bmatrix}
 0 & 1 \\
@@ -128,9 +127,9 @@ X|1 \rangle = \begin{bmatrix}
 $$
 
 I am assuming you are familiar with [matrix multiplication](https://en.wikipedia.org/wiki/Matrix_multiplication).  
-Note how the X-Pauli gate, when operating on pure states - is essentially a [NOT gate](https://en.wikipedia.org/wiki/Inverter_(logic_gate)), but of course - there is no classical equivalent of working on a superposition: $X(a|0 \rangle + b|1 \rangle) = b |0 \rangle + a |1 \rangle$.
+Note how the Pauli-X gate, when operating on pure states - is essentially a [NOT gate](https://en.wikipedia.org/wiki/Inverter_(logic_gate)), but of course - there is no classical equivalent of working on a superposition: $X(a|0 \rangle + b|1 \rangle) = b |0 \rangle + a |1 \rangle$.
 
-The matrix representation of the Pauli-Y gate looks like this:
+The matrix representation of the **Pauli-Y gate** looks like this:
 
 $$
 Y = \begin{bmatrix}
@@ -145,7 +144,7 @@ $Y|1 \rangle = -i|0 \rangle$
 
 Note how it uses [the imaginary number i](https://en.wikipedia.org/wiki/Imaginary_unit).
 
-Lastly, here is the Pauli-Z gate:
+Lastly, here is the **Pauli-Z gate**:
 
 $$
 Z = \begin{bmatrix}
@@ -160,7 +159,7 @@ $Z|1 \rangle = -|1 \rangle$
 Note how the Pauli-Z gate flips the sign of $|1 \rangle$ (but leaves $|0 \rangle$ unchanged).
 
 ### Hadamard gate
-The Hadamard gate (denoted as H) is a very useful gate - it takes "pure" states and turns them into "mixed" states, and vice versa:
+The **Hadamard gate** (denoted as H) is a very useful gate - it takes "pure" states and turns them into "mixed" states, and vice versa:
 
 $$
 H = \frac{1}{\sqrt{2}}\begin{bmatrix}
@@ -183,3 +182,42 @@ Note how Hadamard gates are their own inverses.
 The operation itself is extremely useful since it means we can always start with Qubits that are in a pure state (by performing a measurement, for example) and turn them into mixed states - basically, **creating superposition**. If a pure-state Qubit is operated by an Hadamard gate, measuring it will result in a truly 50%-50% random chance of being either $|0 \rangle$ or $|1 \rangle$, as dictated by the Born rule:  
 
 $\left( \frac{1}{\sqrt{2}} \right)^2 = \left( - \frac{1}{\sqrt{2}} \right)^2 = \frac{1}{2}$
+
+### Phase gates
+**Phase gates** (marked as S and sometimes as P) map the phase of its input Qubit by some angle $\varphi$:
+
+$$
+P(\varphi) = \begin{bmatrix}
+1 & 0 \\
+0 & e^{i \varphi}
+\end{bmatrix}
+$$
+
+So:
+
+$P(\varphi)|0 \rangle = |0 \rangle$  
+$P(\varphi)|1 \rangle = e^{i \varphi} |1 \rangle$
+
+Sometimes in literature you might see **T gates** - those refer to Phase gates with $\varphi = \frac{\pi}{4}$.
+
+### CNOT gate
+Up until now, we've seen Quantum gates that work on a single Qubit - the **CNOT** (short for "Controlled-NOT") gate operates on two:
+
+$$
+CNOT = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & 0
+\end{bmatrix}
+$$
+
+Let's see how it works on pure states:
+
+$CNOT |00 \rangle = |00 \rangle$  
+$CNOT |01 \rangle = |01 \rangle$  
+$CNOT |10 \rangle = |11 \rangle$  
+$CNOT |11 \rangle = |10 \rangle$
+
+We can see the CNOT gate works on two Qubits - the "control" Qubit and the "input" Qubit - if the control Qubit is 0 the input Qubit is left unchanged, but if the control Qubit is 1 - the input Qubit is flipped.  
+This gate is equivalent to a classical [XOR gate](https://en.wikipedia.org/wiki/XOR_gate) but again - it works on Qubits that might be in a superposition.
