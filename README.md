@@ -69,7 +69,7 @@ $$
 $$
 
 $$
-\ket{01} = \begin{bmatrix}
+\ket{11} = \begin{bmatrix}
 0 \\
 0 \\
 0 \\
