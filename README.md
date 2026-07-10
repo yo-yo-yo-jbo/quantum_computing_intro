@@ -275,7 +275,7 @@ We thus get the first Qubit as $\frac{1}{\sqrt{2}} \left( \ket{0} + \ket{1} \rig
 ### Applying the function
 Now we'd like to apply $U_f$ that we described earlier - let's see how it affects the Qubits.  
 Let us examine the second Qubit, which is now in the state of $\frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$.  
-If $f(x) = 1$ then $U_f$ does nothing to the second Qubit.  
+If $f(x) = 0$ then $U_f$ does nothing to the second Qubit.  
 However, if $f(x) = 1$ then $U_f$ flips the sign of the second Qubit - so we get a new state: $\frac{1}{\sqrt{2}} \left( \ket{1} - \ket{0} \right)$.  
 In other words - if the input was $\ket{x}$, we now get as output: ${\left( -1 \right)}^{f\left( x \right)} \ket{x}$.  
-
+This is quite remarkable - note how the function value becomes **encoded as a phase** instead of a bit!
