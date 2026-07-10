@@ -252,3 +252,22 @@ $CCNOT \ket{111} = \ket{110}$
 The way to think about Toffoli gates is like a gate with two control Qubits and one input Qubit, with the following rule - the target Qubit is inverted if and only if the two control Qubits are on.  
 The amazing thing about Toffoli gates is that they are **classically universal** - in a sense that any reversible classical circuit can be implemented using Toffoli gates.  
 This fact alone means that Quantum computers are at least as strong as classical computers, computationally.
+
+## The Deutsch algorithm
+Here is our first example of a Quantum algorithm - it might look boring or impractical at first, but it's a nice example of the "advantage" you get when using Quantum computing.  
+The problem is quite simple - let's assume we have a function $f$ that gets one bit and returns one bit. That function can be "constant" (i.e. $f(0) = f(1)$) or "balanced" (the number of inputs that yield 0 is equal to the number of inputs that yield 1) - we'd like to sample the function $f$ and indicate if the function is constant or not.  
+Classically, the solution is simple - call $f(0)$ and compare to $f(1)$ - but that means we have to invoke function $f$ **twice**.  
+The algorithm we will present (called [the Deutsch algorithm](https://en.wikipedia.org/wiki/Deutsch–Jozsa_algorithm)) samples the function only once!  
+We do that without learning the value of $f$ for a particular input - we manipulate the phase instead.
+
+### The function in a Quantum gate
+As a reminder, a Quantum gate must be reversible, so we can't use the function $f$ as-is.  
+Instead, we will build a gate $U_f$ that operates on two Qubits and performs the following:  
+$U_f \ket{x} \ket{y} = \ket{x} \ket{y \oplus f\left( x \right)}$
+
+So, the first Qubit is preserved, and the second Qubit is XORed with the function value at $\ket{x}$.  
+This is **exactly the CNOT gate** we've presented earlier, except that the control Qubit depends on the function $f$.
+
+### Preparing the input
+We start with two Qubits: $\ket{0} \ket{1}$ and pass each of them through a Hadamard gate.  
+We thus get the first Qubit as $\frac{1}{\sqrt{2}} \left( \ket{0} + \ket{1} \right)$, and the second Qubit as $\frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$, so the new state is $\frac{1}{2} \left( \ket{00} - \ket{01} + \ket{10} - \ket{11} \right)$.
