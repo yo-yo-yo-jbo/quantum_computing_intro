@@ -256,6 +256,17 @@ The way to think about Toffoli gates is like a gate with two control Qubits and 
 The amazing thing about Toffoli gates is that they are **classically universal** - in a sense that any reversible classical circuit can be implemented using Toffoli gates.  
 This fact alone means that Quantum computers are at least as strong as classical computers, computationally.
 
+## Quantum circuits
+Just like classical circuits, Quantum circuits become more interesting when you combine different gates together.  
+However, we have several very strong limitations on Quantum circuits:
+1. There is no way to take a Qubit and clone its state - this is known as the [No-cloning theorem](https://en.wikipedia.org/wiki/No-cloning_theorem). That means we cannot use the same Qubit as an input to two separate gates, for example.
+2. The number of input Qubits has to be equal to the number of output Qubits - this is the result of the fact Quantum gates must be reversible and the No-cloning theorem.
+3. The exception to the irreversibility statement comes in two forms:
+  1. Measurement - once we measure the system, all previous amplitutes are gone - we "collapse" the Qubit's state to one of its base states, based on the Born rule. At that point, the Qubit behaves like a classical bit.
+  2. We can discard Qubits if we so choose - ignoring their state completely.
+
+When we build Quantum circuits, we usually pass Qubits in a pipeline of some sort and eventually perform a measurement.
+
 ## The Deutsch algorithm
 Here is our first example of a Quantum algorithm - it might look boring or impractical at first, but it's a nice example of the "advantage" you get when using Quantum computing.  
 The problem is quite simple - let's assume we have a function $f$ that gets one bit and returns one bit. That function can be "constant" (i.e. $f(0) = f(1)$) or "balanced" (the number of inputs that yield 0 is equal to the number of inputs that yield 1) - we'd like to sample the function $f$ and indicate if the function is constant or not.  
