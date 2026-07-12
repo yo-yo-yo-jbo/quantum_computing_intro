@@ -127,7 +127,10 @@ X \ket{1} = \begin{bmatrix}
 $$
 
 I am assuming you are familiar with [matrix multiplication](https://en.wikipedia.org/wiki/Matrix_multiplication).  
-Note how the Pauli-X gate, when operating on pure states - is essentially a [NOT gate](https://en.wikipedia.org/wiki/Inverter_(logic_gate)), but of course - there is no classical equivalent of working on a superposition: $X\left(a \ket{0} + b \ket{1} \right) = b \ket{0} + a \ket{1}$.
+Note how the Pauli-X gate, when operating on pure states - is essentially a [NOT gate](https://en.wikipedia.org/wiki/Inverter_(logic_gate)), but of course - there is no classical equivalent of working on a superposition: $X\left(a \ket{0} + b \ket{1} \right) = b \ket{0} + a \ket{1}$.  
+We will mark this as:  
+$\ket{0} \to \ket{1}$  
+$\ket{1} \to \ket{0}$
 
 The matrix representation of the **Pauli-Y gate** looks like this:
 
@@ -139,8 +142,8 @@ i & 0
 $$
 
 And this is how it operates on the base states:  
-$Y \ket{0} = i \ket{1}$  
-$Y \ket{1} = -i \ket{0}$
+$\ket{0} \to i \ket{1}$  
+$\ket{1} \to -i \ket{0}$
 
 Note how it uses [the imaginary number i](https://en.wikipedia.org/wiki/Imaginary_unit).
 
@@ -153,8 +156,8 @@ Z = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-$Z \ket{0} = \ket{0}$  
-$Z \ket{1} = - \ket{1}$
+$\ket{0} \to \ket{0}$  
+$\ket{1} \to - \ket{1}$
 
 Note how the Pauli-Z gate flips the sign of $\ket{1}$ (but leaves $\ket{0}$ unchanged).
 
@@ -170,13 +173,13 @@ $$
 
 Note how it operates on pure states:
 
-$H \ket{0} = \frac{1}{\sqrt{2}} \left( \ket{0} + \ket{1} \right)$  
-$H \ket{1} = \frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$
+$\ket{0} \to \frac{1}{\sqrt{2}} \left( \ket{0} + \ket{1} \right)$  
+$\ket{1} \to \frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$
 
 And how it operates on mixed states:
 
-$H \left( \frac{1}{\sqrt{2}} \ket{0} + \frac{1}{\sqrt{2}} \ket{1} \right) = \ket{0}$  
-$H \left( \frac{1}{\sqrt{2}} \ket{0} - \frac{1}{\sqrt{2}} \ket{1} \right) = \ket{1}$
+$\left( \frac{1}{\sqrt{2}} \ket{0} + \frac{1}{\sqrt{2}} \ket{1} \right) \to \ket{0}$  
+$\left( \frac{1}{\sqrt{2}} \ket{0} - \frac{1}{\sqrt{2}} \ket{1} \right) \to \ket{1}$
 
 Note how Hadamard gates are their own inverses.  
 The operation itself is extremely useful since it means we can always start with Qubits that are in a pure state (by performing a measurement, for example) and turn them into mixed states - basically, **creating superposition**. If a pure-state Qubit is operated by a Hadamard gate, measuring it will result in a truly 50%-50% random chance of being either $\ket{0}$ or $\ket{1}$, as dictated by the Born rule:  
@@ -195,8 +198,8 @@ $$
 
 So:
 
-$P(\varphi)\ket{0} = \ket{0}$  
-$P(\varphi)\ket{1} = e^{i \varphi} \ket{1}$
+$\ket{0} \to \ket{0}$  
+$\ket{1} \to e^{i \varphi} \ket{1}$
 
 Sometimes in literature you might see **T gates** - those refer to Phase gates with $\varphi = \frac{\pi}{4}$.
 
@@ -214,10 +217,10 @@ $$
 
 Let's see how it works on pure states:
 
-$CNOT \ket{00} = \ket{00}$  
-$CNOT \ket{01} = \ket{01}$  
-$CNOT \ket{10} = \ket{11}$  
-$CNOT \ket{11} = \ket{10}$
+$\ket{00} \to \ket{00}$  
+$\ket{01} \to \ket{01}$  
+$\ket{10} \to \ket{11}$  
+$\ket{11} \to \ket{10}$
 
 We can see the CNOT gate works on two Qubits - the "control" Qubit and the "input" Qubit - if the control Qubit is 0 the input Qubit is left unchanged, but if the control Qubit is 1 - the input Qubit is flipped.  
 This gate is equivalent to a classical [XOR gate](https://en.wikipedia.org/wiki/XOR_gate) but again - it works on Qubits that might be in a superposition.
@@ -240,14 +243,14 @@ $$
 
 Let us also see how it operates on pure states:
 
-$CCNOT \ket{000} = \ket{000}$  
-$CCNOT \ket{001} = \ket{001}$  
-$CCNOT \ket{010} = \ket{010}$  
-$CCNOT \ket{011} = \ket{011}$  
-$CCNOT \ket{100} = \ket{100}$  
-$CCNOT \ket{101} = \ket{101}$  
-$CCNOT \ket{110} = \ket{111}$  
-$CCNOT \ket{111} = \ket{110}$
+$\ket{000} \to \ket{000}$  
+$\ket{001} \to \ket{001}$  
+$\ket{010} \to \ket{010}$  
+$\ket{011} \to \ket{011}$  
+$\ket{100} \to \ket{100}$  
+$\ket{101} \to \ket{101}$  
+$\ket{110} \to \ket{111}$  
+$\ket{111} \to \ket{110}$
 
 The way to think about Toffoli gates is like a gate with two control Qubits and one input Qubit, with the following rule - the target Qubit is inverted if and only if the two control Qubits are on.  
 The amazing thing about Toffoli gates is that they are **classically universal** - in a sense that any reversible classical circuit can be implemented using Toffoli gates.  
