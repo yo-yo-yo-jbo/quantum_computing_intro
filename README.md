@@ -276,7 +276,7 @@ What we do is add a new input Qubit $\ket{b}$, and implement $\ket{x} \ket{b} \t
 - The entire input $\ket{x}$ is preserved as the output $\ket{x}$.
 - We add one more output Qubit which will be $\ket{f \left( x \right) \oplus b}$ - so, the information from $f\left( x \right)$ exists in the last output Qubit, alongside the control Qubit $\ket{b}$.
 
-## The Deutsch algorithm
+## The Deutsch-Jozsa algorithm
 Here is our first example of a Quantum algorithm - it might look boring or impractical at first, but it's a nice example of the "advantage" you get when using Quantum computing.  
 The problem is quite simple - let's assume we have a function $f$ that gets one bit and returns one bit. That function can be "constant" (i.e. $f\left(0\right) = f\left(1\right)$) or "balanced" (the number of inputs that yield 0 is equal to the number of inputs that yield 1) - we'd like to sample the function $f$ and indicate if the function is constant or not.  
 Classically, the solution is simple - call $f\left(0\right)$ and compare to $f\left(1\right)$ - but that means we have to invoke function $f$ **twice**.  
@@ -303,7 +303,8 @@ If $f(x) = 0$ then $U_f$ does nothing to the second Qubit.
 However, if $f(x) = 1$ then $U_f$ flips the sign of the second Qubit - so we get a new state: $\frac{1}{\sqrt{2}} \left( \ket{1} - \ket{0} \right)$.  
 In other words: $\ket{x} \to {\left( -1 \right)}^{f\left( x \right)} \ket{x}$.  
 This is quite remarkable - note how the function value becomes **encoded as a phase** instead of a bit!  
-Note the first Qubit has just become $\frac{{\left( -1 \right)}^{f\left( 0 \right)} \ket{0} + {\left( -1 \right)}^{f\left( 1 \right)} \ket{1}}{\sqrt{2}}$ - this is the heart of the algorithm - we encode the different values of $f$ in the Qubit's state instead of traditionally calling individual values.
+Note the first Qubit has just become $\frac{{\left( -1 \right)}^{f\left( 0 \right)} \ket{0} + {\left( -1 \right)}^{f\left( 1 \right)} \ket{1}}{\sqrt{2}}$ - this is the heart of the algorithm - we encode the different values of $f$ in the Qubit's state instead of traditionally calling individual values.  
+At this point, we will ignore the second Qubit - as we said we could do.
 
 ### Applying Hadamard again
 Let's apply the Hadamard gate again. Let's separate to cases:
@@ -314,3 +315,10 @@ Let's apply the Hadamard gate again. Let's separate to cases:
 Finally, we measure the first Qubit and we get either 0 or 1 - with a probability of 100% (this is quite rare for Quantum algorithms, usually they have a certain success probability):
 - If we got 0 then it means the function is constant.
 - If we got 1 then it means the function is balanced.
+
+### Extending to n bits
+We can extend this idea to a function $f$ that gets $n$ bits and returns either 0 or 1 for each.  
+Just like before, we say that the function is "constant" if it returns the same result for all inputs, and "balanced" if the number of 0 as an output is equal to the number of 1 as an output. We then:
+1. Start with $n+1$ Qubits - first $n$ of them are at the state of $\ket{0}$ and the last one in the state $\ket{1}$. In mathematical notation this will be represented as $\ket{0}^{\otimes n} \ket{1}$.
+2. We run the Hadamard gate on each Qubit - and the new state is then $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n-1}}{\ket{x}\left( \ket{0} - \ket{1}\right)}$. Note $x$ here runs on all n-bit options, represented as a number between 0 and $2^{n-1}$.
+3. We run the same $U_f$ from before, getting $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n-1}}{\ket{x}\left( \ket{0} \oplus f\left(x\right)- \ket{1} \oplus f\left(x\right)\right)}$. Just like before, this state is equal to $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n-1}}{\left(-1\right)^{f\left(x\right)}\ket{x}\left( \ket{0} - \ket{1} \right)}$.
