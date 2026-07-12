@@ -278,18 +278,19 @@ What we do is add a new input Qubit $\ket{b}$, and implement $\ket{x} \ket{b} \t
 
 ## The Deutsch algorithm
 Here is our first example of a Quantum algorithm - it might look boring or impractical at first, but it's a nice example of the "advantage" you get when using Quantum computing.  
-The problem is quite simple - let's assume we have a function $f$ that gets one bit and returns one bit. That function can be "constant" (i.e. $f(0) = f(1)$) or "balanced" (the number of inputs that yield 0 is equal to the number of inputs that yield 1) - we'd like to sample the function $f$ and indicate if the function is constant or not.  
-Classically, the solution is simple - call $f(0)$ and compare to $f(1)$ - but that means we have to invoke function $f$ **twice**.  
-The algorithm we will present (called [the Deutsch algorithm](https://en.wikipedia.org/wiki/Deutsch–Jozsa_algorithm)) samples the function only once!  
+The problem is quite simple - let's assume we have a function $f$ that gets one bit and returns one bit. That function can be "constant" (i.e. $f\left(0\right) = f\left(1\right)$) or "balanced" (the number of inputs that yield 0 is equal to the number of inputs that yield 1) - we'd like to sample the function $f$ and indicate if the function is constant or not.  
+Classically, the solution is simple - call $f\left(0\right)$ and compare to $f\left(1\right)$ - but that means we have to invoke function $f$ **twice**.  
+The algorithm we will present (called [the Deutsch algorithm](https://en.wikipedia.org/wiki/Deutsch–Jozsa_algorithm)) samples the function **only once**!  
 We do that without learning the value of $f$ for a particular input - we manipulate the phase instead.
 
 ### The function as a Quantum gate
 As a reminder, a Quantum gate must be reversible, so we can't use the function $f$ as-is.  
 Instead, we will build a gate $U_f$ that operates on two Qubits and performs the following:  
-$U_f \ket{x} \ket{y} = \ket{x} \ket{y \oplus f\left( x \right)}$
+$\ket{x} \ket{y} \to \ket{x} \ket{y \oplus f\left( x \right)}$
 
 So, the first Qubit is preserved, and the second Qubit is XORed with the function value at $\ket{x}$.  
-This is **exactly the CNOT gate** we've presented earlier, except that the control Qubit depends on the function $f$.
+This is **exactly the CNOT gate** we've presented earlier, except that the control Qubit depends on the function $f$.  
+Note this is exactly the case for the Quantum universal function we've presented earlier - just for a single bit (and thus two Qubits - here $\ket{y}$ is the control Qubit).
 
 ### Preparing the input
 We start with two Qubits: $\ket{0} \ket{1}$ and pass each of them through a Hadamard gate.  
@@ -300,5 +301,16 @@ Now we'd like to apply $U_f$ that we described earlier - let's see how it affect
 Let us examine the second Qubit, which is now in the state of $\frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$.  
 If $f(x) = 0$ then $U_f$ does nothing to the second Qubit.  
 However, if $f(x) = 1$ then $U_f$ flips the sign of the second Qubit - so we get a new state: $\frac{1}{\sqrt{2}} \left( \ket{1} - \ket{0} \right)$.  
-In other words - if the input was $\ket{x}$, we now get as output: ${\left( -1 \right)}^{f\left( x \right)} \ket{x}$.  
-This is quite remarkable - note how the function value becomes **encoded as a phase** instead of a bit!
+In other words: $\ket{x} \to {\left( -1 \right)}^{f\left( x \right)} \ket{x}$.  
+This is quite remarkable - note how the function value becomes **encoded as a phase** instead of a bit!  
+Note the first Qubit has just become $\frac{{\left( -1 \right)}^{f\left( 0 \right)} \ket{0} + {\left( -1 \right)}^{f\left( 1 \right)} \ket{1}}{\sqrt{2}}$ - this is the heart of the algorithm - we encode the different values of $f$ in the Qubit's state instead of traditionally calling individual values.
+
+### Applying Hadamard again
+Let's apply the Hadamard gate again. Let's separate to cases:
+- If the function was constant, then $f\left( 0 \right) = f\left( 1 \right)$, so the first Qubit is either $\frac{\ket{0} + \ket{1}}{\sqrt{2}}$ or $-\frac{\ket{0} + \ket{1}}{\sqrt{2}}$. So, applying Hadamard turns the Qubit into $\ket{0}$!
+- On the other hand, if the function was balanced, then we get either $\frac{\ket{0} - \ket{1}}{\sqrt{2}}$ or $-\frac{\ket{0} - \ket{1}}{\sqrt{2}}$. Applying Hadamard gets us $\ket{1}$.
+
+### Measuring
+Finally, we measure the first Qubit and we get either 0 or 1 - with a probability of 100% (this is quite rare for Quantum algorithms, usually they have a certain success probability):
+- If we got 0 then it means the function is constant.
+- If we got 1 then it means the function is balanced.
