@@ -267,6 +267,15 @@ However, we have several very strong limitations on Quantum circuits:
 
 When we build Quantum circuits, we usually pass Qubits in a pipeline of some sort and eventually perform a measurement.
 
+### Quantum universal function
+We can build a reversible Quantum circuit which calculates some function $f\left( x \right) : \left\{ 0, 1 \right\}^n \to \left\{ 0, 1 \right\}$ (i.e. a function that receives $n$ bits and returns a single bit).  
+Note the function $f$ does *not* have to be reversible!  
+The way we do this is by turning the function into a new Quantum function: $F\left( x \right):\left\{ 0, 1 \right\}^{n+1} \to \left\{ 0, 1 \right\}^{n+1}$ - note we now have the same amount of Qubits as inputs and outputs.  
+What we do is add a new input Qubit $\ket{b}$, and implement $\ket{x} \ket{b} \to \ket{x} \ket{f \left( x \right) \oplus b}$, or in other words:
+- We add a new input Qubit $\ket{b}$.
+- The entire input $\ket{x}$ is preserved as the output $\ket{x}$.
+- We add one more output Qubit which will be \ket{f \left( x \right) \oplus b}$ - so, the information from $f\left( x \right)$ exists in the last output Qubit, alongside the control Qubit $\ket{b}$.
+
 ## The Deutsch algorithm
 Here is our first example of a Quantum algorithm - it might look boring or impractical at first, but it's a nice example of the "advantage" you get when using Quantum computing.  
 The problem is quite simple - let's assume we have a function $f$ that gets one bit and returns one bit. That function can be "constant" (i.e. $f(0) = f(1)$) or "balanced" (the number of inputs that yield 0 is equal to the number of inputs that yield 1) - we'd like to sample the function $f$ and indicate if the function is constant or not.  
