@@ -262,8 +262,8 @@ However, we have several very strong limitations on Quantum circuits:
 1. There is no way to take a Qubit and clone its state - this is known as the [No-cloning theorem](https://en.wikipedia.org/wiki/No-cloning_theorem). That means we cannot use the same Qubit as an input to two separate gates, for example.
 2. The number of input Qubits has to be equal to the number of output Qubits - this is the result of the fact Quantum gates must be reversible and the No-cloning theorem.
 3. The exception to the irreversibility statement comes in two forms:
-  1. Measurement - once we measure the system, all previous amplitutes are gone - we "collapse" the Qubit's state to one of its base states, based on the Born rule. At that point, the Qubit behaves like a classical bit.
-  2. We can discard Qubits if we so choose - ignoring their state completely.
+    1. Measurement - once we measure the system, all previous amplitutes are gone - we "collapse" the Qubit's state to one of its base states, based on the Born rule. At that point, the Qubit behaves like a classical bit.
+    2. We can discard Qubits if we so choose - ignoring their state completely.
 
 When we build Quantum circuits, we usually pass Qubits in a pipeline of some sort and eventually perform a measurement.
 
@@ -323,7 +323,7 @@ Just like before, we say that the function is "constant" if it returns the same 
 2. We run the Hadamard gate on each Qubit - and the new state is then $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n-1}}{\ket{x}\left( \ket{0} - \ket{1}\right)}$. Note $x$ here runs on all n-bit options, represented as a number between 0 and $2^{n-1}$.
 3. We run the same $U_f$ from before, getting $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n-1}}{\ket{x}\left( \ket{0} \oplus f\left(x\right)- \ket{1} \oplus f\left(x\right)\right)}$. Just like before, this state is equal to $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n-1}}{\left(-1\right)^{f\left(x\right)}\ket{x}\left( \ket{0} - \ket{1} \right)}$.
 4. We ignore the last Qubit but pass all other Qubit through Hadamard gates:
-  1. If $f$ was constant and equal to 0, then $\left( -1 \right)^{f\left( x\right)} = 1$. This means that the state after passing through the Hadamard gate is $\ket{0}^{\otimes n}$. This happens in 100% probability.
-  2. If $f$ was constant and equal to 1, then we get a similar result but with a negative sign: $- \ket{0}^{\otimes n}$.
-  3. If $f$ was balanced then half of the inputs satisfy $f \left( x \right) = 0$, and the other half: $f \left( x \right) = 1$. This means that for the state $\ket{0}^{\otimes n}$ , the coefficients cancel each other perfectly (this is called **destructive interference**) so the coefficient of $\ket{0}^{\otimes n}$ is exactly 0.
+    1. If $f$ was constant and equal to 0, then $\left( -1 \right)^{f\left( x\right)} = 1$. This means that the state after passing through the Hadamard gate is $\ket{0}^{\otimes n}$. This happens in 100% probability.
+    2. If $f$ was constant and equal to 1, then we get a similar result but with a negative sign: $- \ket{0}^{\otimes n}$.
+    3. If $f$ was balanced then half of the inputs satisfy $f \left( x \right) = 0$, and the other half: $f \left( x \right) = 1$. This means that for the state $\ket{0}^{\otimes n}$ , the coefficients cancel each other perfectly (this is called **destructive interference**) so the coefficient of $\ket{0}^{\otimes n}$ is exactly 0.
 5. In other words - if $f$ was constant then upon measurement we get n bits of 0 at 100% probability, but if the function was balanced we will never get n bits of 0. So, we simply measure the result of the last Hadamard gate and return "constant" if and only if all the output bits measured as 0.
