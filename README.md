@@ -327,3 +327,54 @@ Just like before, we say that the function is "constant" if it returns the same 
     2. If $f$ was constant and equal to 1, then we get a similar result but with a negative sign: $- \ket{0}^{\otimes n}$.
     3. If $f$ was balanced then half of the inputs satisfy $f \left( x \right) = 0$, and the other half: $f \left( x \right) = 1$. This means that for the state $\ket{0}^{\otimes n}$ , the coefficients cancel each other perfectly (this is called **destructive interference**) so the coefficient of $\ket{0}^{\otimes n}$ is exactly 0.
 5. In other words - if $f$ was constant then upon measurement we get n bits of 0 at 100% probability, but if the function was balanced we will never get n bits of 0. So, we simply measure the result of the last Hadamard gate and return "constant" if and only if all the output bits measured as 0.
+
+## IBM Qiskit
+The [IBM Qiskit](https://www.ibm.com/quantum/qiskit) is an open-source, Python based SDK from IBM used to program and run Quantum computers.  
+It's quite easy to read an understand, and instead of teaching it from the ground-up (which IBM [offers for free](https://quantum.cloud.ibm.com/docs/en/tutorials)) - I've decided to show it by-example - implementing the simple Deutch algorithm!  
+Here is the code:
+
+```python
+from qiskit import QuantumCircuit
+from qiskit_aer import AerSimulator
+
+def deutsch_circuit(oracle_type):
+
+    # This is circuit that gets 2-Qubit and returns 1 classical bit
+    qc = QuantumCircuit(2, 1)
+
+    # Prepare the state|0>|1>
+    qc.x(1)
+
+    # Apply Hadamard gate on each Qubit
+    qc.h(0)
+    qc.h(1)
+
+    # Apply the function f as an oracle
+    if oracle_type == 'const0':
+        pass
+    elif oracle_type == 'const1':
+        qc.x(1)
+    elif oracle_type == 'identity':
+        qc.cx(0, 1)
+    elif oracle_type == 'not':
+        qc.x(0)
+        qc.cx(0, 1)
+        qc.x(0)
+    else:
+        raise ValueError('Unknown oracle')
+
+    # Final Hadamard (no need to run it on the second Qubit since it'd be ignored)
+    qc.h(0)
+
+    # Measure only first qubit and indicate appropriately
+    qc.measure(0, 0)
+    return qc
+
+# Define a simulator (for testing)
+sim = AerSimulator()
+for oracle in ('const0', 'const1', 'identity', 'not'):
+    qc = deutsch_circuit(oracle)
+    result = sim.run(qc, shots=1024).result()
+    counts = result.get_counts()
+    print(f'{oracle} -> {counts}')
+```
