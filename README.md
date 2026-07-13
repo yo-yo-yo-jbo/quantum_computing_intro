@@ -2,14 +2,14 @@
 With the recent advancements in Quantum computing, I think it's about time that I write something about the subject.  
 I am quite hesitant - this is not my area of expertise, so if I write something incorrect here - please message me and I will correct it.  
 My goal in this blogpost series is to get to the major Quantum computing algorithms - [Grover's algorithm](https://en.wikipedia.org/wiki/Grover%27s_algorithm) and [Shor's algorithm](https://en.wikipedia.org/wiki/Shor%27s_algorithm), while completely skipping the physical parts - which I know even less about.  
-I will warn that there is some mathematical background necessary - particularly [https://en.wikipedia.org/wiki/Linear_algebra](Linear algebra) and [complex numbers](https://en.wikipedia.org/wiki/Complex_number) - but I will try to explain what I can.
+I will warn that there is some mathematical background necessary - particularly [Linear algebra](https://en.wikipedia.org/wiki/Linear_algebra) and [complex numbers](https://en.wikipedia.org/wiki/Complex_number) - but I will try to explain what I can.
 
 ## Background
 Apparently, on the smallest scales, the world behaves very differently than what we're used to. This part is extremely hard to accept as it's substantially different from our day-to-day experiences, and while (in my opinion) we still do not know what *truly* happens at those scales - we have good mathematical models for those behaviors.  
-Interestingly, those behaviors and\or the mathematical model could be used for actual computation that would have certain advantages to classical computing.  
+Interestingly, those behaviors and/or the mathematical model could be used for actual computation that would have certain advantages to classical computing.  
 Instead of rambling on - let me write out those behaviors:
 1. Quantum particles (e.g. [Photons](https://en.wikipedia.org/wiki/Photon), [Electrons](https://en.wikipedia.org/wiki/Electron) and so on) have certain properties that do not have definite values before measurements. Some of those properties could be the particle's position, [momentum](https://en.wikipedia.org/wiki/Momentum), [spin](https://en.wikipedia.org/wiki/Spin_(physics)) (intrinsic [angular momentum](https://en.wikipedia.org/wiki/Angular_momentum)) and so on. We say that those properties are in a **[superposition](https://en.wikipedia.org/wiki/Superposition_principle)** - not because of lack of information about the property, but because that's how nature works. For example, a particle's [spin](https://en.wikipedia.org/wiki/Spin_(physics)) can be measured as "up" or "down", but is normally in a superposition of "up" and "down" - kind of a "mix" of them. We mark that as $\ket{\varphi} = a \ket{\uparrow} + b \ket{\downarrow}$ - and we say that the spin of the particle has a coefficient of "a" in the "up" state, and a coefficient of "b" to be in the "down" state.
-2. Measuring a particle "collapses" the property into a base state - randomly (but not uniformly). For example, in the spin example, we asserted $\ket{\varphi} = a\ket{\uparrow} + b\ket{\downarrow}$. If we measure the spin - it would collapse into the state $\ket{\uparrow}$ with a probability of $\left|a\right|^2$, and collapse into the state $\ket{\downarrow}$ with a probability of $\left|b\right|^2$. This rule is known as [the Born rule](https://en.wikipedia.org/wiki/Born_rule), and dictates a strong assumption on the coefficients - **their values squared must sum up to 1**, since they are probabilities. In mathematical notation: $a^2 + b^2 = 1$, and generally for $n$ coefficients that I will be marking as $c_i$: $\sum_{i=1}^{n}{\left|c_i\right|}^2 = 1$. Note that **we do not control the result** - nature decides on its own based on the coefficients and the Born rule. Note that after a measurement, follow-up measurements result in the same value always - that's why we call this phenomenon a "collapse". I do not want to get into the engineering or physics aspects, but maintaining quantum particles in superpositions without making the collapse due to unintentional measurements (I will keep the definition of a measurement vague here on purpose) - is the main engineering challenge in Quantum computing these days.
+2. Measuring a particle "collapses" the property into a base state - randomly (but not uniformly). For example, in the spin example, we asserted $\ket{\varphi} = a\ket{\uparrow} + b\ket{\downarrow}$. If we measure the spin - it would collapse into the state $\ket{\uparrow}$ with a probability of $\left|a\right|^2$, and collapse into the state $\ket{\downarrow}$ with a probability of $\left|b\right|^2$. This rule is known as [the Born rule](https://en.wikipedia.org/wiki/Born_rule), and dictates a strong assumption on the coefficients - **their values squared must sum up to 1**, since they are probabilities. In mathematical notation: $\left|a\right|^2 + \left|b\right|^2 = 1$, and generally for $n$ coefficients that I will be marking as $c_i$: $\sum_{i=1}^{n}{\left|c_i\right|}^2 = 1$. Note that **we do not control the result** - nature decides on its own based on the coefficients and the Born rule. Note that after a measurement, follow-up measurements result in the same value always - that's why we call this phenomenon a "collapse". I do not want to get into the engineering or physics aspects, but maintaining quantum particles in superpositions without making the collapse due to unintentional measurements (I will keep the definition of a measurement vague here on purpose) - is the main engineering challenge in Quantum computing these days.
 3. The coefficients in superposition could be negative or even complex numbers - as long as their sum of squares is exactly 1. This might look weird or useless, but that's the source of Quantum computing's power.
 4. We can manipulate the superposition coefficients without measuring them. This is done via something called "Quantum gates" (the analogue of traditional [logic gates](https://en.wikipedia.org/wiki/Logic_gate)), and is mathematically done by multiplying the algebraic representation of the quantum state with a [Unitary matrix](https://en.wikipedia.org/wiki/Unitary_matrix). More on that later.
 5. Quantum entanglement - we can have two (or more) particles with a **joint state**. When I say a "joint state" I mean that you cannot think as the state of a single particle anymore - the states are "correlated" in some sense. That also means that measuring one particle *immediately* affects the other, i.e. the joint state of these particles collapses together. This also means manipulating the state (as we discussed) - manipulates the states of both particles at the same time.
@@ -18,11 +18,11 @@ As you can see, these are a lot of assumptions - and they also imply many limita
 
 ## Qubits
 Just like regular [bits](https://en.wikipedia.org/wiki/Bit) we have on a classic computer - we have the Quantum computing equivalent called "Qubits". Classical bits are either 0 or 1, and are implemented using voltage (high voltage above a certain threshold represents a digital 1, low voltage represents a 0).  
-Qubits also have 0 and 1 equivalents - for example, a spin of a particle can be used for that: spin down could represent a 0 and spin up could represent a 1 - which we will represent as $\ket{0}$ and $\ket{1}$. Since we have a superposition - a Qubit would have coefficients to those base states: $a\ket{0} + b\ket{1}$. Let us also remember that $a$ and $b$ can be complex numbers, and their sum of squares must add up to 1: $\left|a\right|^2 + \left|b\right|^2 = 1$. Sometimes you might see those coefficients described as **probability amplitudes** - for all means and purposes - it's just a name we give them.  
+Qubits also have 0 and 1 equivalents - for example, a spin of a particle can be used for that: spin down could represent a 0 and spin up could represent a 1 - which we will represent as $\ket{0}$ and $\ket{1}$. Since we have a superposition - a Qubit would have coefficients to those base states: $a\ket{0} + b\ket{1}$. Let us also remember that $a$ and $b$ can be complex numbers, and their sum of squares must add up to 1: $\left|a\right|^2 + \left|b\right|^2 = 1$. Sometimes you might see those coefficients described as **probability amplitudes** - for all intents and purposes - it's just a name we give them.  
 I will avoid the question of how those states are actually implemented - spin is not the only way to do so - and treat it as a "black-box", just like one doesn't necessarily need to know how classical bits are implemented.  
 One important aspect of Qubits is that they cannot be erased or copied - this has many implications on Quantum gates which I will describe shortly.  
 Of course, just like one bit is not very interesting - one Qubit might not be as powerful as many. In Quantum computing, we are interested in **multi-Qubit systems**, exploiting the superposition and entanglement properties I mentioned earlier.  
-As an example, suppose we have 2 Qubits - they can have a joint state of $\frac{1}{\sqrt{2}} \ket{00} + \frac{1}{\sqrt{2}} \ket{11}$ (note how the coefficients's squares sum up to 1!) - if we perform a measurements - both Qubits collapse to the same base state - $\ket{0}$ or $\ket{1}$! This is how entanglement looks like mathematically, and we will see its use in this blogpost series.  
+As an example, suppose we have 2 Qubits - they can have a joint state of $\frac{1}{\sqrt{2}} \ket{00} + \frac{1}{\sqrt{2}} \ket{11}$ (note how the coefficients's squares sum up to 1!) - if we perform a measurement - both Qubits collapse to the same base state - $\ket{0}$ or $\ket{1}$! This is how entanglement looks like mathematically, and we will see its use in this blogpost series.  
 One more important thing - we will represent the states $\ket{0}$ and $\ket{1}$ as column vectors - this will be useful when we discuss Quantum gates. So:
 
 $$
@@ -162,7 +162,7 @@ $\ket{1} \to - \ket{1}$
 Note how the Pauli-Z gate flips the sign of $\ket{1}$ (but leaves $\ket{0}$ unchanged).
 
 ### Hadamard gate
-The **Hadamard gate** (denoted as H) is a very useful gate - it takes "pure" states and turns them into "mixed" states, and vice versa:
+The **Hadamard gate** (denoted as H) is a very useful gate - it takes basis states and turns them into superposition states, and vice versa:
 
 $$
 H = \frac{1}{\sqrt{2}}\begin{bmatrix}
@@ -176,18 +176,18 @@ Note how it operates on pure states:
 $\ket{0} \to \frac{1}{\sqrt{2}} \left( \ket{0} + \ket{1} \right)$  
 $\ket{1} \to \frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$
 
-And how it operates on mixed states:
+And how it operates on superposition states:
 
 $\left( \frac{1}{\sqrt{2}} \ket{0} + \frac{1}{\sqrt{2}} \ket{1} \right) \to \ket{0}$  
 $\left( \frac{1}{\sqrt{2}} \ket{0} - \frac{1}{\sqrt{2}} \ket{1} \right) \to \ket{1}$
 
 Note how Hadamard gates are their own inverses.  
-The operation itself is extremely useful since it means we can always start with Qubits that are in a pure state (by performing a measurement, for example) and turn them into mixed states - basically, **creating superposition**. If a pure-state Qubit is operated by a Hadamard gate, measuring it will result in a truly 50%-50% random chance of being either $\ket{0}$ or $\ket{1}$, as dictated by the Born rule:  
+The operation itself is extremely useful since it means we can always start with Qubits that are in a basis state (by performing a measurement, for example) and turn them into superposition states - basically, **creating superposition**. If a basis-state Qubit is operated by a Hadamard gate, measuring it will result in a truly 50%-50% random chance of being either $\ket{0}$ or $\ket{1}$, as dictated by the Born rule:  
 
 $\left( \frac{1}{\sqrt{2}} \right)^2 = \left( - \frac{1}{\sqrt{2}} \right)^2 = \frac{1}{2}$
 
 ### Phase gates
-**Phase gates** (marked as S and sometimes as P) map the phase of its input Qubit by some angle $\varphi$:
+**Phase gates** (usually marked as $P$ or $R_\varphi$) shift the phase of its input Qubit by some angle $\varphi$:
 
 $$
 P(\varphi) = \begin{bmatrix}
@@ -201,7 +201,7 @@ So:
 $\ket{0} \to \ket{0}$  
 $\ket{1} \to e^{i \varphi} \ket{1}$
 
-Sometimes in literature you might see **T gates** - those refer to Phase gates with $\varphi = \frac{\pi}{4}$.
+Two specific phase gates have their own names: the **S gate** is the phase gate with $\varphi = \frac{\pi}{2}$, and the **T gate** is the phase gate with $\varphi = \frac{\pi}{4}$.
 
 ### CNOT gate
 Up until now, we've seen Quantum gates that work on a single Qubit - the **CNOT** (short for "Controlled-NOT") gate operates on two:
@@ -261,8 +261,8 @@ Just like classical circuits, Quantum circuits become more interesting when you 
 However, we have several very strong limitations on Quantum circuits:
 1. There is no way to take a Qubit and clone its state - this is known as the [No-cloning theorem](https://en.wikipedia.org/wiki/No-cloning_theorem). That means we cannot use the same Qubit as an input to two separate gates, for example.
 2. The number of input Qubits has to be equal to the number of output Qubits - this is the result of the fact Quantum gates must be reversible and the No-cloning theorem.
-3. The exception to the irreversibility statement comes in two forms:
-    1. Measurement - once we measure the system, all previous amplitutes are gone - we "collapse" the Qubit's state to one of its base states, based on the Born rule. At that point, the Qubit behaves like a classical bit.
+3. The exceptions to the reversibility requirement come in two forms:
+    1. Measurement - once we measure the system, all previous amplitudes are gone - we "collapse" the Qubit's state to one of its base states, based on the Born rule. At that point, the Qubit behaves like a classical bit.
     2. We can discard Qubits if we so choose - ignoring their state completely.
 
 When we build Quantum circuits, we usually pass Qubits in a pipeline of some sort and eventually perform a measurement.
@@ -274,7 +274,7 @@ The way we do this is by turning the function into a new Quantum function: $F\le
 What we do is add a new input Qubit $\ket{b}$, and implement $\ket{x} \ket{b} \to \ket{x} \ket{f \left( x \right) \oplus b}$, or in other words:
 - We add a new input Qubit $\ket{b}$.
 - The entire input $\ket{x}$ is preserved as the output $\ket{x}$.
-- We add one more output Qubit which will be $\ket{f \left( x \right) \oplus b}$ - so, the information from $f\left( x \right)$ exists in the last output Qubit, alongside the control Qubit $\ket{b}$.
+- We add one more output Qubit which will be $\ket{f \left( x \right) \oplus b}$ - so, the information from $f\left( x \right)$ exists in the last output Qubit, XORed with our added Qubit $\ket{b}$.
 
 ## The Deutsch-Jozsa algorithm
 Here is our first example of a Quantum algorithm - it might look boring or impractical at first, but it's a nice example of the "advantage" you get when using Quantum computing.  
@@ -290,7 +290,7 @@ $\ket{x} \ket{y} \to \ket{x} \ket{y \oplus f\left( x \right)}$
 
 So, the first Qubit is preserved, and the second Qubit is XORed with the function value at $\ket{x}$.  
 This is **exactly the CNOT gate** we've presented earlier, except that the control Qubit depends on the function $f$.  
-Note this is exactly the case for the Quantum universal function we've presented earlier - just for a single bit (and thus two Qubits - here $\ket{y}$ is the control Qubit).
+Note this is exactly the case for the Quantum universal function we've presented earlier - just for a single bit (and thus two Qubits - here $\ket{x}$ is the control Qubit and $\ket{y}$ is the target Qubit).
 
 ### Preparing the input
 We start with two Qubits: $\ket{0} \ket{1}$ and pass each of them through a Hadamard gate.  
@@ -318,10 +318,11 @@ Finally, we measure the first Qubit and we get either 0 or 1 - with a probabilit
 
 ### Extending to n bits
 We can extend this idea to a function $f$ that gets $n$ bits and returns either 0 or 1 for each.  
-Just like before, we say that the function is "constant" if it returns the same result for all inputs, and "balanced" if the number of 0 as an output is equal to the number of 1 as an output. We then:
+Just like before, we say that the function is "constant" if it returns the same result for all inputs, and "balanced" if the number of 0 as an output is equal to the number of 1 as an output.  
+Importantly, this algorithm relies on a **promise**: we are guaranteed in advance that $f$ is *either* constant *or* balanced - nothing in between. The algorithm's job is only to tell us which of the two it is. We then:
 1. Start with $n+1$ Qubits - first $n$ of them are at the state of $\ket{0}$ and the last one in the state $\ket{1}$. In mathematical notation this will be represented as $\ket{0}^{\otimes n} \ket{1}$.
-2. We run the Hadamard gate on each Qubit - and the new state is then $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n-1}}{\ket{x}\left( \ket{0} - \ket{1}\right)}$. Note $x$ here runs on all n-bit options, represented as a number between 0 and $2^{n-1}$.
-3. We run the same $U_f$ from before, getting $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n-1}}{\ket{x}\left( \ket{0} \oplus f\left(x\right)- \ket{1} \oplus f\left(x\right)\right)}$. Just like before, this state is equal to $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n-1}}{\left(-1\right)^{f\left(x\right)}\ket{x}\left( \ket{0} - \ket{1} \right)}$.
+2. We run the Hadamard gate on each Qubit - and the new state is then $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n}-1}{\ket{x}\left( \ket{0} - \ket{1}\right)}$. Note $x$ here runs on all n-bit options, represented as a number between 0 and $2^{n}-1$.
+3. We run the same $U_f$ from before, getting $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n}-1}{\ket{x}\left( \ket{0 \oplus f\left(x\right)}- \ket{1 \oplus f\left(x\right)}\right)}$. Just like before, this state is equal to $\frac{1}{\sqrt{2^{n+1}}}\sum_{x=0}^{2^{n}-1}{\left(-1\right)^{f\left(x\right)}\ket{x}\left( \ket{0} - \ket{1} \right)}$.
 4. We ignore the last Qubit but pass all other Qubit through Hadamard gates:
     1. If $f$ was constant and equal to 0, then $\left( -1 \right)^{f\left( x\right)} = 1$. This means that the state after passing through the Hadamard gate is $\ket{0}^{\otimes n}$. This happens in 100% probability.
     2. If $f$ was constant and equal to 1, then we get a similar result but with a negative sign: $- \ket{0}^{\otimes n}$.
@@ -330,7 +331,7 @@ Just like before, we say that the function is "constant" if it returns the same 
 
 ## IBM Qiskit
 The [IBM Qiskit](https://www.ibm.com/quantum/qiskit) is an open-source, Python based SDK from IBM used to program and run Quantum computers.  
-It's quite easy to read an understand, and instead of teaching it from the ground-up (which IBM [offers for free](https://quantum.cloud.ibm.com/docs/en/tutorials)) - I've decided to show it by-example - implementing the simple Deutch algorithm!  
+It's quite easy to read and understand, and instead of teaching it from the ground-up (which IBM [offers for free](https://quantum.cloud.ibm.com/docs/en/tutorials)) - I've decided to show it by-example - implementing the simple Deutsch algorithm!  
 Here is the code:
 
 ```python
@@ -398,3 +399,4 @@ I hope to continue with at least Grover's algorithm and Shor's algorithm - maybe
 Stay tuned!
 
 Jonathan Bar Or
+
