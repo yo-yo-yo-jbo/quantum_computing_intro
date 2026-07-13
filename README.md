@@ -378,3 +378,12 @@ for oracle in ('const0', 'const1', 'identity', 'not'):
     counts = result.get_counts()
     print(f'{oracle} -> {counts}')
 ```
+
+The important parts:
+- Defining the circuit as one that gets **2-Qubits as inputs** and returns **1 classical bit as output**: `QuantumCircuit(2, 1)`.
+- Getting the state $\ket{0} \ket{1}$: `qc.x(1)`. This applies the **Pauli-X gate** (remember?) on Qubit 1 (**we are 0-indexed**) - so it's really the second Qubit.
+- Applying Hadamard on Qubits: `qc.h(0)` and `qc.h(1)`.
+- Applying the **CNOT Gate** in case of getting a balanced function $f\left( x \right) = x$: `qc.cx(0, 1)`, with **Qubit number 0 being the control Qubit**.
+- Note it might look like cheating since I get the oracle type as input - but it's not really since I apply Quantum gates on the current state (denoted as `qc`) - there is no measurement at that point and the algorithm does not really know what kind of oracle it got.
+- The measurement is done via `qc.measure(0, 0)`. The meaning of the parameters is take **Qubit number 0** (the first input parameter), measure it - and **apply it as classical bit number 0**.
+
