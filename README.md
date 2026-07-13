@@ -297,13 +297,17 @@ We start with two Qubits: $\ket{0} \ket{1}$ and pass each of them through a Hada
 We thus get the first Qubit as $\frac{1}{\sqrt{2}} \left( \ket{0} + \ket{1} \right)$, and the second Qubit as $\frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$, so the new state is $\frac{1}{2} \left( \ket{00} - \ket{01} + \ket{10} - \ket{11} \right)$.
 
 ### Applying the function
-Now we'd like to apply $U_f$ that we described earlier - let's see how it affects the Qubits.  
-Let us examine the second Qubit, which is now in the state of $\frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$.  
-If $f(x) = 0$ then $U_f$ does nothing to the second Qubit.  
-However, if $f(x) = 1$ then $U_f$ flips the sign of the second Qubit - so we get a new state: $\frac{1}{\sqrt{2}} \left( \ket{1} - \ket{0} \right)$.  
-In other words: $\ket{x} \to {\left( -1 \right)}^{f\left( x \right)} \ket{x}$.  
-This is quite remarkable - note how the function value becomes **encoded as a phase** instead of a bit!  
-Note the first Qubit has just become $\frac{{\left( -1 \right)}^{f\left( 0 \right)} \ket{0} + {\left( -1 \right)}^{f\left( 1 \right)} \ket{1}}{\sqrt{2}}$ - this is the heart of the algorithm - we encode the different values of $f$ in the Qubit's state instead of traditionally calling individual values.  
+Now we'd like to apply $U_f$ that we described earlier - let's see how it affects the state.  
+The trick lies in the second Qubit being in the state $\frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$. Since the first Qubit is in a superposition, let us examine what $U_f$ does to a single component $\ket{x}$ of the first Qubit, together with the second Qubit:  
+$\ket{x} \frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right) \to \ket{x} \frac{1}{\sqrt{2}} \left( \ket{0 \oplus f\left( x \right)} - \ket{1 \oplus f\left( x \right)} \right)$  
+Let's separate to cases (remember $f\left( x \right)$ is a single bit):  
+- If $f\left( x \right) = 0$, then $\ket{0 \oplus f\left( x \right)} = \ket{0}$ and $\ket{1 \oplus f\left( x \right)} = \ket{1}$ - so nothing changes, and the second Qubit stays $\frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$.
+- If $f\left( x \right) = 1$, then $\ket{0 \oplus f\left( x \right)} = \ket{1}$ and $\ket{1 \oplus f\left( x \right)} = \ket{0}$ - so we get $\frac{1}{\sqrt{2}} \left( \ket{1} - \ket{0} \right) = -\frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$, which is the same second Qubit except for an overall factor of $-1$.
+
+In *both* cases the second Qubit ends up right back in the state $\frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)$, and the only effect is a factor of ${\left( -1 \right)}^{f\left( x \right)}$ multiplying the whole term. Since that's just a scalar, we can attach it to the first Qubit instead:  
+$\ket{x} \to {\left( -1 \right)}^{f\left( x \right)} \ket{x}$  
+This is quite remarkable - note how the function value becomes **encoded as a phase** on the first Qubit instead of a bit! This effect is known as **phase kickback** - the phase "kicks back" from the second Qubit onto the first, leaving the second Qubit untouched.  
+Since the first Qubit was in the superposition $\frac{1}{\sqrt{2}} \left( \ket{0} + \ket{1} \right)$, applying this to each of its components turns the first Qubit into $\frac{{\left( -1 \right)}^{f\left( 0 \right)} \ket{0} + {\left( -1 \right)}^{f\left( 1 \right)} \ket{1}}{\sqrt{2}}$ - this is the heart of the algorithm - we encode the different values of $f$ in the Qubit's state instead of traditionally calling individual values.  
 At this point, we will ignore the second Qubit - as we said we could do.
 
 ### Applying Hadamard again
@@ -399,4 +403,3 @@ I hope to continue with at least Grover's algorithm and Shor's algorithm - maybe
 Stay tuned!
 
 Jonathan Bar Or
-
