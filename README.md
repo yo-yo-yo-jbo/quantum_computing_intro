@@ -278,7 +278,7 @@ What we do is add a new input Qubit $\ket{b}$, and implement $\ket{x} \ket{b} \t
 
 ## The Deutsch-Jozsa algorithm
 Here is our first example of a Quantum algorithm - it might look boring or impractical at first, but it's a nice example of the "advantage" you get when using Quantum computing.  
-The problem is quite simple - let's assume we have a function $f$ that gets one bit and returns one bit. That function can be "constant" (i.e. $f\left(0\right) = f\left(1\right)$) or "balanced" (the number of inputs that yield 0 is equal to the number of inputs that yield 1) - we'd like to sample the function $f$ and indicate if the function is constant or not.  
+The problem is quite simple - let's assume we have a function $f$ that gets one bit and returns one bit. That function can be "constant" (i.e. $f\left( 0 \right) = f \left( 1 \right)$ ) or "balanced" (the number of inputs that yield 0 is equal to the number of inputs that yield 1) - we'd like to sample the function $f$ and indicate if the function is constant or not.  
 Classically, the solution is simple - call $f\left(0\right)$ and compare to $f\left(1\right)$ - but that means we have to invoke function $f$ **twice**.  
 The algorithm we will present (called [the Deutsch algorithm](https://en.wikipedia.org/wiki/Deutsch–Jozsa_algorithm)) samples the function **only once**!  
 We do that without learning the value of $f$ for a particular input - we manipulate the phase instead.
