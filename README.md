@@ -338,6 +338,9 @@ from qiskit import QuantumCircuit
 from qiskit_aer import AerSimulator
 
 def deutsch_circuit(oracle_type):
+    """
+        Implements the Deutsch algorithm as a Quantum circuit.
+    """
 
     # This is circuit that gets 2-Qubit and returns 1 classical bit
     qc = QuantumCircuit(2, 1)
@@ -387,3 +390,11 @@ The important parts:
 - Note it might look like cheating since I get the oracle type as input - but it's not really since I apply Quantum gates on the current state (denoted as `qc`) - there is no measurement at that point and the algorithm does not really know what kind of oracle it got.
 - The measurement is done via `qc.measure(0, 0)`. The meaning of the parameters is take **Qubit number 0** (the first input parameter), measure it - and **apply it as classical bit number 0**.
 
+## Summary
+This was *a lot* in one blogpost - I hope you were able to follow everything!  
+My hope from this blogpost was to introduce the computation model, show the weirdness of Quantum gates and states, and also show the serious limitations the model has - you cannot simply "run on all states and get the correct result" like you might see in popular (and wrong) descriptions.  
+I hope to continue with at least Grover's algorithm and Shor's algorithm - maybe a bit more hand-wavy, but I hope I'll be able to explain how they work, at least conceptually.
+
+Stay tuned!
+
+Jonathan Bar Or
