@@ -1,7 +1,7 @@
 # Introduction to Quantum computing
 With the recent advancements in Quantum computing, I think it's about time that I write something about the subject.  
 I am quite hesitant - this is not my area of expertise, so if I write something incorrect here - please message me and I will correct it.  
-My goal in this blogpost series is to get to the major Quantum computing algorithms - [Grover's algorithm](https://en.wikipedia.org/wiki/Grover%27s_algorithm) and [Shor's algorithm](https://en.wikipedia.org/wiki/Shor%27s_algorithm), while completely skipping the physical parts - which I know even less about.  
+My goal in this blogpost series is to get the knowledge to lead us directly to the major Quantum computing algorithms - [Grover's algorithm](https://en.wikipedia.org/wiki/Grover%27s_algorithm) and [Shor's algorithm](https://en.wikipedia.org/wiki/Shor%27s_algorithm), while completely skipping the physical parts - which I know even less about.  
 I will warn that there is some mathematical background necessary - particularly [Linear algebra](https://en.wikipedia.org/wiki/Linear_algebra) and [complex numbers](https://en.wikipedia.org/wiki/Complex_number) - but I will try to explain what I can.
 
 ## Background
