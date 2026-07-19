@@ -402,4 +402,4 @@ I hope to continue with at least Grover's algorithm and Shor's algorithm - maybe
 
 Stay tuned!
 
-Jonathan Bar Or
+Jonathan Bar Or (https://jonathanbaror.com)
